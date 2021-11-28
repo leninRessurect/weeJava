@@ -1,6 +1,6 @@
 public class Q1 {
     public static void main(String[] args) {
-        System.out.println(getOp("jkdfn"));
+        System.out.println(getHobbits("HobbitsDo"));
     }
     
     public enum TokenType {
@@ -87,4 +87,36 @@ public class Q1 {
         }
         return token;
     } 
+
+    public static TokenType getKeyword(String s) {
+        TokenType token;
+        switch (s) {
+            case "if": token = TokenType.KEYWORD_IF; break;
+            case "else": token = TokenType.KEYWORD_ELSE; break;
+            case "int": token = TokenType.KEYWORD_INT; break;
+            case "String": token = TokenType.KEYWORD_STRING; break;
+            case "public": token = TokenType.KEYWORD_PUBLIC; break;
+            case "class": token = TokenType.KEYWORD_CLASS; break;
+            case "void": token = TokenType.KEYWORD_VOID; break;
+            case "static": token = TokenType.KEYWORD_STATIC; break;
+            default: token = null; break;
+        }
+        return token;
+    }
+
+    public static TokenType getHobbits(String s) {
+        TokenType token;
+        switch (s) {
+            case "HobbitsSay": token = TokenType.HOBBITS_SAY; break;
+            case "HobbitsDo": token = TokenType.HOBBITS_DO; break;
+            default: token = null; break;
+        }
+        return token;
+    }
+
+    public static Boolean isLetter(char ch) {
+        boolean letter;
+        
+        return letter;
+    }
 }
