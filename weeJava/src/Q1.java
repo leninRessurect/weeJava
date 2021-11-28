@@ -27,47 +27,6 @@ public class Q1 {
         boolean newLine = isLineBreak('\n');
         System.out.println("newline: " + newLine);
     }
-    
-    public enum TokenType {
-        //OPERATORS
-        OP_MULTIPLY,
-        OP_DIVIDE,
-        OP_MOD,
-        OP_ADD,
-        OP_SUBTRACT,
-        OP_LESS,
-        OP_LESSEQUAL,
-        OP_GREATER,
-        OP_GREATEREQUAL,
-        OP_EQUAL,
-        OP_NOTEQUAL,
-        OP_ASSIGN,
-        //SYMBOLS
-        LEFT_PAREN,
-        RIGHT_PAREN,
-        LEFT_BRACE,
-        RIGHT_BRACE,
-        LEFT_BRACKET,
-        RIGHT_BRACKET,
-        SEMICOLON,
-        COMMA,
-        //KEYWORDS
-        KEYWORD_IF,
-        KEYWORD_ELSE,
-        KEYWORD_INT,
-        KEYWORD_STRING,
-        KEYWORD_PUBLIC,
-        KEYWORD_CLASS,
-        KEYWORD_VOID,
-        KEYWORD_STATIC,
-        //IDENTIFIERS AND LITERALS
-        IDENTIFIER,
-        INTEGER,
-        STRING,
-        //HOBBITS METHODS
-        HOBBITS_SAY,
-        HOBBITS_DO
-    }
 
     public static TokenType getOp(char ch) {
         TokenType token;
