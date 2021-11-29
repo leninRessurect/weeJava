@@ -1,0 +1,8 @@
+public class Q3Example1 {
+
+	// This is a single-line comment
+	public static void main(String[] args) {
+		HobbitsSay("Hello Hobbits!");
+	}
+
+}
