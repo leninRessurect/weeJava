@@ -1,31 +1,63 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Q3 {
     public static void main(String[] args) {
-        TokenType op1 = getOp('+');
-        System.out.println("op1: " + op1);
+        System.out.println("## Q3Example1:");
+        scan("src/Q3Example1.txt");
+        System.out.println("\n## Q3Example2:");
+        scan("src/Q3Example2.txt");
+    }
 
-        TokenType op2 = getOp("==");
-        System.out.println("op2: " + op2);
-
-        TokenType sym = getSymbol('{');
-        System.out.println("symbol: " + sym);
-
-        TokenType keyword = getKeyword("int");
-        System.out.println("keyword: " + keyword);
-
-        TokenType hobbits = getHobbits("HobbitsSay");
-        System.out.println("hobbits: " + hobbits);
-
-        boolean letter = isLetter('a');
-        System.out.println("letter: " + letter);
-        
-        boolean digit = isDigit('0');
-        System.out.println("digit: " + digit);
-
-        boolean whiteSpace = isWhiteSpace(' ');
-        System.out.println("whiteSpace: " + whiteSpace);
-
-        boolean newLine = isLineBreak('\n');
-        System.out.println("newline: " + newLine);
+    public static void scan(String fname) {
+        String text = readFile2String(fname);
+        int n = text.length();
+        int index = 0;
+        while (index < n) {
+            // assign charachters
+            char ch = text.charAt(index); // current character
+            char ch_next = ' '; // assign next character unless at last index in which case space is appended
+            if (index < n-1) {
+                ch_next = text.charAt(index+1);
+            }
+            //handle single line comments
+            if (ch=='/' && ch_next=='/') {
+                // skip characters untill new line
+                while (!isLineBreak(ch)) {
+                    index++;
+                    ch = text.charAt(index);
+                }
+            }
+            // handle mutliline comments
+            if (ch=='/' && ch_next=='*') {
+                // skip characters unitll endcomment
+                while (!isEndComment(ch, ch_next)) {
+                    index++;
+                    ch = text.charAt(index);
+                    ch_next = text.charAt(index+1);
+                }
+                // skips endcomment
+                if (isEndComment(ch, ch_next)) {
+                    index = index + 2;
+                    ch = text.charAt(index);
+                }
+            }
+            // print char and loop
+            System.out.print(ch);
+            index++;
+        }
+    }
+    
+    // read a file into a string
+    public static String readFile2String (String fname) {
+        String content = null;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(fname)));
+        } catch (IOException e) {
+            System.out.println("Fail to read a file");
+        }
+        return content;
     }
 
     public static TokenType getOp(char ch) {
@@ -137,8 +169,16 @@ public class Q3 {
         }
         return lineBreak;
     }
+    // checks if charachters correspond to */
+    public static boolean isEndComment(char ch, char ch_next) {
+        boolean endComment;
+        if (ch=='*' && ch_next=='/') {
+            endComment = true;
+        } else {
+            endComment = false;
+        }
 
-    public static void scan(String fname) {
-        
+        return endComment;
     }
+
 }
