@@ -1,0 +1,36 @@
+public class WeeJavaExample {
+
+	public static void main(String[] args) {
+		
+		int a = 100;
+		int b = 2;
+		int c = 154 % 3;
+		int d = a + b - HobbitsDo(c,4) / 5;
+		
+		int result=0;
+		
+		if (d >= a) {
+			if (d == 100) result = a;
+			else if (d <= 700) result = 700;
+			else if (d < 1000) result = 1000;
+		} else if (d > 0) {
+			result = a;
+		} else if (d != 0) {
+			result = 0;
+		}
+
+		dummy();
+		dummy(result);	
+		
+	}
+	
+	public static void dummy() {
+		String s = "I'm going on an adventure!";		
+		HobbitsSay(s);
+	}
+	
+	public static void dummy(int x) {
+		HobbitsSay("dummy: " + x);
+	}
+	
+}

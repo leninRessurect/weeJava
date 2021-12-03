@@ -130,7 +130,7 @@ public class Q1 {
 
     public static boolean isLineBreak(char ch) {
         boolean lineBreak;
-        if (ch == '\n' || ch == '\r') {
+        if (!String.valueOf(ch).matches(".")) {
             lineBreak = true;
         } else {
             lineBreak = false;

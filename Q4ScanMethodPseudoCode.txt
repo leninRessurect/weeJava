@@ -1,0 +1,116 @@
+
+// This is the pseudo code for the scan method in Q4
+
+
+n = prog.length()
+index = 0
+lineNumber = 1
+
+while (index < n) {
+
+	ch = prog.charAt(index)
+	// only one of the following six methods calls can be "not null" or "true" for a character
+	whiteSpace = isWhiteSpace(ch)
+	newline = isLineBreak(ch)
+	sym = getSymbol(ch)
+	op = getOp(ch)
+	letter = isLetter(ch)
+	digit = isDigit(c)
+
+	if (ch is white space) {  // simply skip white space
+
+		index ++
+		continue
+
+	} else if (newline) {  // new line
+
+		increase line number by one
+		index ++
+		continue
+
+	} else if (ch is a symbol) {  // find a symbol
+
+		print lineNumber, sym, ch
+		index ++
+		continue
+
+	} else if (ch is an operator) { // find an operator
+
+		// How to extend the code below to also identify two-character operators (e.g., <=,==)?
+		print lineNumber, op, ch
+		index ++
+		continue
+
+	} else if (ch is a letter) { // find a letter
+
+		word = ""
+		word += ch
+		index ++
+		while (index < n) {  // use this while loop to identify e.g. the variable name
+			ch = prog.charAt(index)
+			if (ch is a letter) {
+				word += ch
+				index ++
+			}
+			else { break }
+		}
+		
+		// the word can be variable name (i.e. IDENTIFIER) or keyword (e.g., KEYWORD_INT) or Hobbits method (e.g., HOBBITS_SAY)
+		// how to decide?
+
+		TokenType keyword = getKeyword(word)
+		TokenType hobbits = getHobbits(word)
+		if (keyword != null) {
+			print lineNumber, keyword, word
+		} else if (...) {
+			print ...
+		} else {
+			print ...
+		}
+		continue
+
+	} else if (ch is a digit) { // find the first digit of a number
+
+		number = ""
+		number += ch
+		index ++
+		while (index < n) {
+			ch = prog.charAt(index)
+			if (ch is a digit) {
+				number += ch
+				index ++
+			}
+			else { break }
+		}
+		print ...
+		continue
+
+	} else if (ch == '\"') {  // find the beginning of a string literal e.g., "abc"
+
+		str = ""
+		str += ch
+		index ++
+		
+		// to add a while loop similar to the one when ch is a digit or letter
+
+		print lineNumber, TokenType.STRING, str
+		continue
+
+	} else {
+
+		print Encountered something not expected: ch
+		index ++
+		continue
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
