@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class Q5 {
     public static void main(String[] args) {
@@ -141,7 +143,7 @@ public class Q5 {
 	}
 
     /**
-     * reads contents of file into string, parses into tokens and prints them
+     * reads contents of file into string, parses into tokens. finds compile time errors, prints them
      * @param fname the file name
      */
     public static void scan(String fname) {
@@ -149,6 +151,11 @@ public class Q5 {
         int n = text.length();
         int index = 0;
         int lineNumber = 1;
+        // Deque is a modified stack object that allows for easier manipulation
+        Deque<Integer> braceStack = new LinkedList<Integer>();
+        Deque<Integer> bracketStack = new LinkedList<Integer>();
+        Deque<Integer> parenStack = new LinkedList<Integer>();
+
         while (index < n) {
             char ch = text.charAt(index); //current character
             char ch_next =' ';
@@ -198,33 +205,37 @@ public class Q5 {
 
             // deal with symbols
             } else if (sym!=null) { // ch is symbol
-                // check if ch == {
-                // loop untill last char, sum '{' and '}' encountered
-                // if sums not equal print error
-                if (sym==TokenType.LEFT_BRACE) {
-                    int leftSum = 0;
-                    int rightSum = 0;
-                    int i = index;
-                    while (i < n) {
-                        char testChar = text.charAt(i);
-                        if (testChar == '{') {
-                            leftSum++;
-                            i++;
-                            continue;
-                        } else if (testChar == '}') {
-                            rightSum++;
-                            i++;
-                            continue;
+                // if open bracket push to stack
+                if (sym==TokenType.LEFT_BRACE || sym==TokenType.LEFT_BRACKET || sym==TokenType.LEFT_PAREN) {
+                    if (sym==TokenType.LEFT_BRACE) {
+                        braceStack.push(lineNumber); 
+                    } else if (sym==TokenType.LEFT_BRACKET) {
+                        bracketStack.push(lineNumber);
+                    } else if (sym==TokenType.LEFT_PAREN) {
+                        parenStack.push(lineNumber);
+                    }
+                } else if (sym==TokenType.RIGHT_BRACE || sym==TokenType.RIGHT_BRACKET || sym==TokenType.RIGHT_PAREN) {
+                    // if close bracket, remove match from stack, or if no match print error
+                    if (sym==TokenType.RIGHT_BRACE) {
+                        if (braceStack.isEmpty()) {
+                            System.out.println("Syntax error: unmatched brace at Line " + lineNumber);
                         } else {
-                            i++;
-                            continue;
+                            braceStack.removeLast();
+                        }
+                    } else if (sym==TokenType.RIGHT_BRACKET) {
+                        if (bracketStack.isEmpty()) {
+                            System.out.println("Syntax error: unmatched bracket at Line " + lineNumber);
+                        } else {
+                            bracketStack.removeLast();
+                        }
+                    } else if (sym==TokenType.RIGHT_PAREN) {
+                        if (parenStack.isEmpty()) {
+                            System.out.println("Syntax error: unmatched Parenthesis at Line " + lineNumber);
+                        } else {
+                            parenStack.removeLast();
                         }
                     }
-                    if (leftSum != rightSum) {
-                        System.out.println("Syntax error, insert \"}\" to close open brace at Line " + lineNumber);
-                    }
                 }
-                System.out.println(lineNumber + ", " + sym + ", " + ch);
                 index++;
                 continue;
 
@@ -232,12 +243,10 @@ public class Q5 {
             } else if (op!=null || op_str!=null) { //ch is op or ch+ch_next is double char op
                 // deal with double char op
                 if (op_str!=null) { 
-                    System.out.println(lineNumber + ", " + op_str + ", " + ch_nextString);
                     index = index + 2; // skip rest of op
                     continue;
                 // deal with single char op
                 } else { 
-                    System.out.println(lineNumber + ", " + op + ", " + ch);
                     index++;
                     continue;
                 }
@@ -270,13 +279,10 @@ public class Q5 {
                 TokenType keyword = getKeyword(word); // returns token type or null
                 TokenType hobbits = getHobbits(word); // returns token type or null
                 if (keyword != null) { // is keyword
-                    System.out.println(lineNumber + ", " + keyword + ", " + word);
                     continue;
                 } else if (hobbits != null) { // is hobbits method
-                    System.out.println(lineNumber + ", " + hobbits + ", " + word);
                     continue;
                 } else {
-                    System.out.println(lineNumber + ", " + TokenType.IDENTIFIER + ", " + word);
                     continue;
                 }
             
@@ -299,7 +305,6 @@ public class Q5 {
                         break;
                     }
                 }
-                System.out.println(lineNumber + ", " + TokenType.INTEGER + ", " + number);
                 continue;
             // DEAL WITH STRINGS
             } else if (ch=='\"') { // ch is beginning of string
@@ -327,7 +332,6 @@ public class Q5 {
                         continue;
                     }
                 }
-                System.out.println(lineNumber + ", " + TokenType.STRING + ", " + str);
             // anything not dealt with
             } else {
                 System.out.println(lineNumber + ", Encountered something not expected: " + ch);
@@ -338,5 +342,17 @@ public class Q5 {
             
         }
 
+        while (braceStack.size() != 0) {
+            System.out.println("Syntax error: unmatched Brace at Line " + braceStack.peek());
+            braceStack.removeFirst();
+        }
+        while (bracketStack.size() != 0) {
+            System.out.println("Syntax error: unmatched Bracket at Line " + bracketStack.peek());
+            bracketStack.removeFirst();
+        }
+        while (parenStack.size() != 0) {
+            System.out.println("Syntax error: unmatched Parenthesis at Line " + parenStack.peek());
+            parenStack.removeFirst();
+        }
     }
 }
