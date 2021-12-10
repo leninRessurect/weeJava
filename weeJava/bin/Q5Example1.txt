@@ -1,0 +1,10 @@
+
+public class Q5Example1 {
+
+	public static void main(String[] args) {
+		
+		int 0varName = 10;
+		
+	}
+
+}
